@@ -13,6 +13,8 @@ namespace TagCloud.TagCloudImageGenerator.WordStatisticsBuilders
             set { _boringWords = new HashSet<string>(value.Select(w => w.ToLower())); }
         }
 
+        public int NeededWords { get; set; } = 100;
+
         public Statistic BuildStatistic(IEnumerable<string> words)
         {
             var dict = new Dictionary<string, int>();
@@ -26,7 +28,7 @@ namespace TagCloud.TagCloudImageGenerator.WordStatisticsBuilders
             return new Statistic(dict.Values.Min(), dict.Values.Max(),
                 dict.Select(pair => new WordsStatistic(pair.Key, pair.Value))
                     .OrderByDescending(x => x.Count)
-                    .Take(100));
+                    .Take(NeededWords));
         }
     }
 }

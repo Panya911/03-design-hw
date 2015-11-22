@@ -56,6 +56,18 @@ namespace TagCloud.TagCloudImageGenerator
             return this;
         }
 
+        public ITagCloudImageGenerator SetNeededWordsCount(int count)
+        {
+            _statisticsBuilder.NeededWords = count;
+            return this;
+        }
+
+        public ITagCloudImageGenerator SetMaxFontSize(int size)
+        {
+            _currentImageGenerator.MaxFontSize = size;
+            return this;
+        }
+
         public ITagCloudImageGenerator SetImageGenerator(string algorithm)
         {
             _currentImageGenerator = _imageGenerators[algorithm];

@@ -11,5 +11,7 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
         List<Color> Colors { get; set; }
         Image GenerateImage(Statistic statistic);
         string Name { get; }
+        int MaxFontSize { get; set; }
+
     }
 }

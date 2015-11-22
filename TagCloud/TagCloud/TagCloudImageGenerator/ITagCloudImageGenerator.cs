@@ -9,6 +9,8 @@ namespace TagCloud.TagCloudImageGenerator
         ITagCloudImageGenerator SetImageSize(int width, int height);
         ITagCloudImageGenerator SetColorList(List<Color> colors);
         ITagCloudImageGenerator SetBoringWordsFile(string path);
+        ITagCloudImageGenerator SetNeededWordsCount(int count);
+        ITagCloudImageGenerator SetMaxFontSize(int size);
         Image GenerateImage(string path);
     }
 }
