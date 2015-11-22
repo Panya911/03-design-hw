@@ -38,8 +38,8 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
                 if (!TryGetLocationForRect(boundsRect, out location))
                     break;
                 _badPlaces.Add(new RectangleF(location, boundsRect));
-                //graphics.DrawRectangle(new Pen(Color.Black), new Rectangle(location.X, location.Y,
-                // (int)boundsRect.Width, (int)boundsRect.Height));
+                graphics.DrawRectangle(new Pen(Color.Black), new Rectangle(location.X, location.Y,
+                 (int)boundsRect.Width, (int)boundsRect.Height));
                 graphics.DrawString(wordsStatistic.Word, font, new SolidBrush(GetRandomColor()), location);
             }
             return image;

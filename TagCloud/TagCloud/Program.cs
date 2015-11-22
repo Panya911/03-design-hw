@@ -11,13 +11,13 @@ namespace TagCloud
     {
         static void Main(string[] args)
         {
-            
+
             var generator = DiContainer.GetService<ITagCloudImageGenerator>();
 
             generator.SetFont("courier")
                             .SetColorList(new List<Color> { Color.Blue, Color.Red, Color.Green })
                             .SetBoringWordsFile("boring.txt")
-                            .SetImageSize(1000, 1000);
+                            .SetImageSize(1500, 1500);
 
             var image = generator.GenerateImage("Text.txt");
             image.Save("output.png", ImageFormat.Png);
