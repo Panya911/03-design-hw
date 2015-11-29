@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Ninject;
-using Ninject.Extensions.Conventions;
+using System.Linq;
+using CommandLine;
 using TagCloud.TagCloudImageGenerator;
+using TagCloud.TagCloudImageGenerator.ImageGenerators;
 
 namespace TagCloud
 {
@@ -11,16 +13,30 @@ namespace TagCloud
     {
         static void Main(string[] args)
         {
+            var imageGeneratorsNames = DiContainer.GetAllServices<IImageGenerator>()
+                .Select(g => g.Name);
+            //todo выводить сообщение, если переданы лишние параметры
+            var arguments = new Arguments(imageGeneratorsNames);
+            if (!Parser.Default.ParseArguments(args, arguments))
+                return;
 
             var generator = DiContainer.GetService<ITagCloudImageGenerator>();
 
-            generator.SetFont("courier")
-                            .SetColorList(new List<Color> { Color.Blue, Color.Red, Color.Green })
-                            .SetBoringWordsFile("boring.txt")
-                            .SetImageSize(1500, 1500);
-
-            var image = generator.GenerateImage("Text.txt");
-            image.Save("output.png", ImageFormat.Png);
+            try
+            {
+                generator.SetFont(arguments.Font)
+                    .SetColorList(new List<Color> {Color.Blue, Color.Red, Color.Green})
+                    .SetBoringWordsFile(arguments.BoringWordsFile)
+                    .SetImageSize(arguments.ImageWidth, arguments.ImageHeight)
+                    .SetImageGenerator(arguments.ImageGenerator);
+            }
+            catch (TagCloudImageGeneratorTuningException e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+            var image = generator.GenerateImage(arguments.InputPath);
+            image.Save(arguments.OutputPath, ImageFormat.Png);
         }
     }
 }

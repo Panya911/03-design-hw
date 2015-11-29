@@ -7,6 +7,5 @@ namespace TagCloud.TagCloudImageGenerator.WordStatisticsBuilders
         Statistic BuildStatistic(IEnumerable<string> words);
         IEnumerable<string> BoringWords { get; set; }
         int NeededWords { get; set; }
-
     }
 }

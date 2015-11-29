@@ -11,6 +11,7 @@ namespace TagCloud.TagCloudImageGenerator
         ITagCloudImageGenerator SetBoringWordsFile(string path);
         ITagCloudImageGenerator SetNeededWordsCount(int count);
         ITagCloudImageGenerator SetMaxFontSize(int size);
+        ITagCloudImageGenerator SetImageGenerator(string generatorName);
         Image GenerateImage(string path);
     }
 }

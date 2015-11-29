@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
@@ -53,10 +57,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiContainer.cs" />
+    <Compile Include="Arguments.cs" />
     <Compile Include="TagCloudImageGenerator\ITagCloudImageGenerator.cs" />
     <Compile Include="TagCloudImageGenerator\Statistic.cs" />
     <Compile Include="TagCloudImageGenerator\TagCloudImageGenerator.cs" />
     <Compile Include="TagCloudImageGenerator\ImageGenerators\IImageGenerator.cs" />
+    <Compile Include="TagCloudImageGenerator\WordsReaders\WordReaderBase.cs" />
     <Compile Include="TagCloudImageGenerator\WordStatisticsBuilders\DictionaryWordStatisticsBuilder.cs" />
     <Compile Include="TagCloudImageGenerator\ImageGenerators\SpiralCloudImageGenerator.cs" />
     <Compile Include="TagCloudImageGenerator\ImageGenerators\ImageGeneratorBase.cs" />

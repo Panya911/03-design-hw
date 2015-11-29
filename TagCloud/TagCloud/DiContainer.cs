@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using System.Collections.Generic;
+using Ninject;
 using Ninject.Extensions.Conventions;
 using TagCloud.TagCloudImageGenerator;
 using TagCloud.TagCloudImageGenerator.ImageGenerators;
@@ -19,6 +20,11 @@ namespace TagCloud
         public static T GetService<T>()
         {
             return Container.Get<T>();
+        }
+
+        public static IEnumerable<T> GetAllServices<T>()
+        {
+            return Container.GetAll<T>();
         }
 
         private static void BindDependencies()

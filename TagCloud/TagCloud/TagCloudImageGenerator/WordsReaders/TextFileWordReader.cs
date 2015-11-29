@@ -4,16 +4,13 @@ using System.IO;
 
 namespace TagCloud.TagCloudImageGenerator.WordsReaders
 {
-    public class TextFileWordReader : IWordReader
+    public class TextFileWordReader : WordReaderBase
     {
-        
-        public IEnumerable<string> ReadAllWords(string path)
+        protected override string GetAllText(string path)
         {
-            var text= File.ReadAllText(path);
-            text = text.Replace(" ", Environment.NewLine);
-            return text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            return File.ReadAllText(path);
         }
 
-        public string FileExtension => ".txt";
+        public override string FileExtension => ".txt";
     }
 }

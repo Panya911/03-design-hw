@@ -21,15 +21,30 @@ namespace TagCloud.TagCloudImageGenerator
         public TagCloudImageGenerator(IEnumerable<IWordReader> readers, IWordsStatisticsBuilder statisticsBuilder,
             IEnumerable<IImageGenerator> imageGenerators)
         {
-            _readers = readers.ToDictionary(x => x.FileExtension, x => x);
-            _imageGenerators = imageGenerators.ToDictionary(x => x.Name, x => x);
+            if (readers == null)
+                throw new ArgumentNullException(nameof(readers));
+            if (statisticsBuilder == null)
+                throw new ArgumentNullException(nameof(statisticsBuilder));
+            if (imageGenerators == null)
+                throw new ArgumentNullException(nameof(imageGenerators));
+            _readers = readers.ToDictionary(x => x.FileExtension.ToLower(), x => x);
+            _imageGenerators = imageGenerators.ToDictionary(x => x.Name.ToLower(), x => x);
             _statisticsBuilder = statisticsBuilder;
             _currentImageGenerator = _imageGenerators.First().Value;
         }
 
         public ITagCloudImageGenerator SetFont(string fontName)
         {
-            var newFont = new FontFamily(fontName);
+
+            FontFamily newFont;
+            try
+            {
+                newFont = new FontFamily(fontName);
+            }
+            catch (ArgumentException)
+            {
+                throw new TagCloudImageGeneratorTuningException(fontName + " font doesn't exist or not installed on your computer");
+            }
             _currentImageGenerator.Font = newFont;
             return this;
         }
@@ -50,7 +65,17 @@ namespace TagCloud.TagCloudImageGenerator
 
         public ITagCloudImageGenerator SetBoringWordsFile(string path)
         {
-            var extension = GetExtension(path);
+            if (!File.Exists(path))
+                throw new TagCloudImageGeneratorTuningException(path + " file doesn't exist");
+            string extension;
+            try
+            {
+                extension = GetExtension(path);
+            }
+            catch (ArgumentException e)
+            {
+                throw new TagCloudImageGeneratorTuningException(e.Message);
+            }
             var inputReader = _readers[extension];
             _statisticsBuilder.BoringWords = inputReader.ReadAllWords(path);
             return this;
@@ -68,9 +93,12 @@ namespace TagCloud.TagCloudImageGenerator
             return this;
         }
 
-        public ITagCloudImageGenerator SetImageGenerator(string algorithm)
+        public ITagCloudImageGenerator SetImageGenerator(string generatorName)
         {
-            _currentImageGenerator = _imageGenerators[algorithm];
+            generatorName = generatorName.ToLower();
+            if (!_imageGenerators.ContainsKey(generatorName))
+                throw new TagCloudImageGeneratorTuningException(generatorName + " generator doesn't exist");
+            _currentImageGenerator = _imageGenerators[generatorName.ToLower()];
             return this;
         }
 
@@ -92,6 +120,14 @@ namespace TagCloud.TagCloudImageGenerator
             var statistics = _statisticsBuilder.BuildStatistic(words);
 
             return _currentImageGenerator.GenerateImage(statistics);
+        }
+    }
+
+    public class TagCloudImageGeneratorTuningException : Exception
+    {
+        public TagCloudImageGeneratorTuningException(string msg)
+            : base(msg)
+        {
         }
     }
 }

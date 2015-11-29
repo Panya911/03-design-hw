@@ -9,13 +9,13 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
 
         protected override bool TryGetLocationForRect(SizeF rect, out Point location)
         {
-            var step = 5;
-            var phi = 0.0;
+            var spiralStep = 5;
+            var angle = 0.0;
             while (true)
             {
-                var rho = step / (2 * Math.PI) * phi;
-                var dx = rho * Math.Cos(phi);
-                var dy = rho * Math.Sin(phi);
+                var radius = spiralStep / (2 * Math.PI) * angle;  
+                var dx = radius * Math.Cos(angle);
+                var dy = radius * Math.Sin(angle);
                 var newLocation = new Point(Center.X + (int)(dx-rect.Width/2), Center.Y + (int)(dy-rect.Height/2));
                 var newRect = new RectangleF(newLocation, rect);
                 if (CanLocate(newRect))
@@ -28,7 +28,7 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
                     location=Point.Empty;
                     return false;
                 }
-                phi += 0.01;
+                angle += 0.01;
             }
         }
 

@@ -19,7 +19,7 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
 
         private int _minWeight;
         private int _maxWeight;
-        private static Random _rnd=new Random();
+        private static Random _rnd = new Random();
 
         private List<RectangleF> _badPlaces;
         public Image GenerateImage(Statistic wordsStatistics)
@@ -32,17 +32,24 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
             _badPlaces = new List<RectangleF>();
             foreach (var wordsStatistic in wordsStatistics.WordsStatistics)
             {
-                var font = GetFont(wordsStatistic.Count);
-                var boundsRect = graphics.MeasureString(wordsStatistic.Word, font);
-                Point location;
-                if (!TryGetLocationForRect(boundsRect, out location))
-                    break;
-                _badPlaces.Add(new RectangleF(location, boundsRect));
-                graphics.DrawRectangle(new Pen(Color.Black), new Rectangle(location.X, location.Y,
-                 (int)boundsRect.Width, (int)boundsRect.Height));
-                graphics.DrawString(wordsStatistic.Word, font, new SolidBrush(GetRandomColor()), location);
+                var success = TryDrawWord(wordsStatistic, graphics);
+                if (!success) break;
             }
             return image;
+        }
+
+        private bool TryDrawWord(WordsStatistic wordsStatistic, Graphics graphics)
+        {
+            var font = GetFont(wordsStatistic.Count);
+            var boundsRect = graphics.MeasureString(wordsStatistic.Word, font);
+            Point location;
+            if (!TryGetLocationForRect(boundsRect, out location))
+                return false;
+            _badPlaces.Add(new RectangleF(location, boundsRect));
+            //graphics.DrawRectangle(new Pen(Color.Black), new Rectangle(location.X, location.Y,
+            //    (int)boundsRect.Width, (int)boundsRect.Height));
+            graphics.DrawString(wordsStatistic.Word, font, new SolidBrush(GetRandomColor()), location);
+            return true;
         }
 
         public abstract string Name { get; }

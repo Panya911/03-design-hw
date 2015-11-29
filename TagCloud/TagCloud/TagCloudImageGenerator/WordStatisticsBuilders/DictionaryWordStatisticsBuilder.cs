@@ -19,7 +19,7 @@ namespace TagCloud.TagCloudImageGenerator.WordStatisticsBuilders
         {
             var dict = new Dictionary<string, int>();
             foreach (var word in words.Select(w => w.ToLower())
-                .Where(w => !_boringWords.Contains(w)))
+                .Where(w =>_boringWords==null || !_boringWords.Contains(w)))
             {
                 if (!dict.ContainsKey(word))
                     dict[word] = 0;
