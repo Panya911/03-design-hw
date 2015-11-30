@@ -2,6 +2,7 @@
 using Ninject;
 using Ninject.Extensions.Conventions;
 using TagCloud.TagCloudImageGenerator;
+using TagCloud.TagCloudImageGenerator.CloudDrawer;
 using TagCloud.TagCloudImageGenerator.ImageGenerators;
 using TagCloud.TagCloudImageGenerator.WordsReaders;
 using TagCloud.TagCloudImageGenerator.WordStatisticsBuilders;
@@ -36,10 +37,11 @@ namespace TagCloud
                 .BindAllInterfaces());
 
             Container.Bind<IWordsStatisticsBuilder>().To<DictionaryWordStatisticsBuilder>();
+            Container.Bind<ITagCloudImageDrawer>().To<TagCloudImageDrawer>();
 
             Container.Bind(c => c.FromThisAssembly()
                 .SelectAllClasses()
-                .InheritedFrom<IImageGenerator>()
+                .InheritedFrom<ITagCloudGenerator>()
                 .BindAllInterfaces());
 
             Container.Bind<ITagCloudImageGenerator>().To<TagCloudImageGenerator.TagCloudImageGenerator>();

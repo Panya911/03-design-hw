@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace TagCloud.TagCloudImageGenerator.CloudDrawer
+namespace TagCloud.TagCloudImageGenerator
 {
-    class TagCloud
+    public class TagCloud
     {
+        public readonly int Width;
+        public readonly int Height;
+        public readonly IEnumerable<Word> Words;
+
+        public TagCloud(int width, int height, IEnumerable<Word> words)
+        {
+            Width = width;
+            Height = height;
+            Words = words;
+        }
     }
 }

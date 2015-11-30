@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace TagCloud.TagCloudImageGenerator.ImageGenerators
 {
-    public class SpiralCloudImageGenerator : ImageGeneratorBase
+    public class SpiralCloudTagCloudGenerator : TagCloudGeneratorBase
     {
         public override string Name => "Spiral";
 

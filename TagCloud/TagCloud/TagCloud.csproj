@@ -58,14 +58,18 @@
   <ItemGroup>
     <Compile Include="DiContainer.cs" />
     <Compile Include="Arguments.cs" />
+    <Compile Include="TagCloudImageGenerator\CloudDrawer\ITagCloudImageDrawer.cs" />
+    <Compile Include="TagCloudImageGenerator\TagCloud.cs" />
+    <Compile Include="TagCloudImageGenerator\CloudDrawer\TagCloudImageDrawer.cs" />
+    <Compile Include="TagCloudImageGenerator\Word.cs" />
     <Compile Include="TagCloudImageGenerator\ITagCloudImageGenerator.cs" />
     <Compile Include="TagCloudImageGenerator\Statistic.cs" />
     <Compile Include="TagCloudImageGenerator\TagCloudImageGenerator.cs" />
-    <Compile Include="TagCloudImageGenerator\ImageGenerators\IImageGenerator.cs" />
+    <Compile Include="TagCloudImageGenerator\TagCloudGenerators\ITagCloudGenerator.cs" />
     <Compile Include="TagCloudImageGenerator\WordsReaders\WordReaderBase.cs" />
     <Compile Include="TagCloudImageGenerator\WordStatisticsBuilders\DictionaryWordStatisticsBuilder.cs" />
-    <Compile Include="TagCloudImageGenerator\ImageGenerators\SpiralCloudImageGenerator.cs" />
-    <Compile Include="TagCloudImageGenerator\ImageGenerators\ImageGeneratorBase.cs" />
+    <Compile Include="TagCloudImageGenerator\TagCloudGenerators\SpiralCloudTagCloudGenerator.cs" />
+    <Compile Include="TagCloudImageGenerator\TagCloudGenerators\TagCloudGeneratorBase.cs" />
     <Compile Include="TagCloudImageGenerator\WordsReaders\IWordReader.cs" />
     <Compile Include="TagCloudImageGenerator\WordStatisticsBuilders\IWordsStatisticsBuilder.cs" />
     <Compile Include="Program.cs" />
@@ -84,6 +88,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

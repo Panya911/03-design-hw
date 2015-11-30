@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using TagCloud.TagCloudImageGenerator;
+using TagCloud.TagCloudImageGenerator.CloudDrawer;
 using TagCloud.TagCloudImageGenerator.ImageGenerators;
 using TagCloud.TagCloudImageGenerator.WordsReaders;
 using TagCloud.TagCloudImageGenerator.WordStatisticsBuilders;
@@ -18,7 +19,8 @@ namespace TagCloudTests
 
         private Mock<IWordReader> _readerMock;
         private Mock<IWordsStatisticsBuilder> _wordStatisticBuilderMock;
-        private Mock<IImageGenerator> _imageGeneratorMock;
+        private Mock<ITagCloudGenerator> _imageGeneratorMock;
+        private Mock<ITagCloudImageDrawer> _tagCloudDrawerMock;
 
         [SetUp]
         public void SetUp()
@@ -26,8 +28,9 @@ namespace TagCloudTests
             _readerMock = new Mock<IWordReader>();
             _readerMock.Setup(r => r.FileExtension).Returns("txt");
             _wordStatisticBuilderMock = new Mock<IWordsStatisticsBuilder>();
-            _imageGeneratorMock = new Mock<IImageGenerator>();
+            _imageGeneratorMock = new Mock<ITagCloudGenerator>();
             _imageGeneratorMock.Setup(g => g.Name).Returns("name");
+            _tagCloudDrawerMock=new Mock<ITagCloudImageDrawer>();
         }
 
         [Test]
@@ -35,7 +38,8 @@ namespace TagCloudTests
         {
             var generator = new TagCloudImageGenerator(new[] { _readerMock.Object },
                 _wordStatisticBuilderMock.Object,
-                new[] { _imageGeneratorMock.Object });
+                new[] { _imageGeneratorMock.Object },
+                _tagCloudDrawerMock.Object);
             Assert.Throws(typeof(TagCloudImageGeneratorTuningException), () => generator.SetFont("Magic Font"));
         }
 
@@ -44,7 +48,8 @@ namespace TagCloudTests
         {
             var generator = new TagCloudImageGenerator(new[] { _readerMock.Object },
                 _wordStatisticBuilderMock.Object,
-                new[] { _imageGeneratorMock.Object });
+                new[] { _imageGeneratorMock.Object },
+                _tagCloudDrawerMock.Object);
             Assert.Throws(typeof(TagCloudImageGeneratorTuningException), () => generator.SetImageGenerator("incorrect Name"));
         }
     }

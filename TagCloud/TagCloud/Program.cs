@@ -13,7 +13,7 @@ namespace TagCloud
     {
         static void Main(string[] args)
         {
-            var imageGeneratorsNames = DiContainer.GetAllServices<IImageGenerator>()
+            var imageGeneratorsNames = DiContainer.GetAllServices<ITagCloudGenerator>()
                 .Select(g => g.Name);
             //todo выводить сообщение, если переданы лишние параметры
             var arguments = new Arguments(imageGeneratorsNames);

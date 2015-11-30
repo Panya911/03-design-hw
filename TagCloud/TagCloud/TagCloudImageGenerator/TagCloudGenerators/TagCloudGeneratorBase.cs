@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace TagCloud.TagCloudImageGenerator.ImageGenerators
 {
-    public abstract class ImageGeneratorBase : IImageGenerator
+    public abstract class TagCloudGeneratorBase : ITagCloudGenerator
     {
         public int ImageWidth { get; set; } = 1000;
         public int ImageHeight { get; set; } = 1000;
@@ -19,36 +19,42 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
 
         private int _minWeight;
         private int _maxWeight;
-        private static Random _rnd = new Random();
+        private static readonly Random Rnd = new Random();
 
         private List<RectangleF> _badPlaces;
-        public Image GenerateImage(Statistic wordsStatistics)
+        public TagCloud GenerateCloud(Statistic wordsStatistics)
         {
             _minWeight = wordsStatistics.MinWeight;
             _maxWeight = wordsStatistics.MaxWeight;
-            var image = new Bitmap(ImageWidth, ImageHeight);
-            var graphics = Graphics.FromImage(image);
-            graphics.SmoothingMode = SmoothingMode.HighQuality;
-            _badPlaces = new List<RectangleF>();
-            foreach (var wordsStatistic in wordsStatistics.WordsStatistics)
-            {
-                var success = TryDrawWord(wordsStatistic, graphics);
-                if (!success) break;
-            }
-            return image;
+            var words = PlaceWords((wordsStatistics.WordsStatistics));
+
+            return new TagCloud(ImageWidth, ImageHeight, words);
         }
 
-        private bool TryDrawWord(WordsStatistic wordsStatistic, Graphics graphics)
+        private IEnumerable<Word> PlaceWords(IEnumerable<WordsStatistic> statistics)
+        {
+            _badPlaces = new List<RectangleF>();
+            foreach (var wordsStatistic in statistics)
+            {
+                Word word;
+                if (!TryPlaceWord(wordsStatistic, out word))
+                    yield break;
+                yield return word;
+            }
+        }
+
+        private bool TryPlaceWord(WordsStatistic wordsStatistic, out Word word)
         {
             var font = GetFont(wordsStatistic.Count);
-            var boundsRect = graphics.MeasureString(wordsStatistic.Word, font);
+            var boundsRect = graphics.MeasureString(wordsStatistic.Word, font); //it's Bad :( where should i take graphics?
             Point location;
             if (!TryGetLocationForRect(boundsRect, out location))
+            {
+                word = null;
                 return false;
+            }
             _badPlaces.Add(new RectangleF(location, boundsRect));
-            //graphics.DrawRectangle(new Pen(Color.Black), new Rectangle(location.X, location.Y,
-            //    (int)boundsRect.Width, (int)boundsRect.Height));
-            graphics.DrawString(wordsStatistic.Word, font, new SolidBrush(GetRandomColor()), location);
+            word = new Word(boundsRect, wordsStatistic.Word, location, GetRandomColor(), font);
             return true;
         }
 
@@ -76,7 +82,7 @@ namespace TagCloud.TagCloudImageGenerator.ImageGenerators
 
         private Color GetRandomColor()
         {
-            return Colors[_rnd.Next(Colors.Count)];
+            return Colors[Rnd.Next(Colors.Count)];
         }
     }
 }

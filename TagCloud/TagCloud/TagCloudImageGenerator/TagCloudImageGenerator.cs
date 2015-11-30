@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using TagCloud.TagCloudImageGenerator.CloudDrawer;
 using TagCloud.TagCloudImageGenerator.ImageGenerators;
 using TagCloud.TagCloudImageGenerator.WordsReaders;
 using TagCloud.TagCloudImageGenerator.WordStatisticsBuilders;
@@ -14,12 +15,13 @@ namespace TagCloud.TagCloudImageGenerator
         private readonly IWordsStatisticsBuilder _statisticsBuilder;
 
         private readonly Dictionary<string, IWordReader> _readers;
-        private readonly Dictionary<string, IImageGenerator> _imageGenerators;
+        private readonly Dictionary<string, ITagCloudGenerator> _imageGenerators;
+        private readonly ITagCloudImageDrawer _tagCloudDrawer;
 
-        private IImageGenerator _currentImageGenerator;
+        private ITagCloudGenerator _currentTagCloudGenerator;
 
         public TagCloudImageGenerator(IEnumerable<IWordReader> readers, IWordsStatisticsBuilder statisticsBuilder,
-            IEnumerable<IImageGenerator> imageGenerators)
+            IEnumerable<ITagCloudGenerator> imageGenerators, ITagCloudImageDrawer tagCloudDrawer)
         {
             if (readers == null)
                 throw new ArgumentNullException(nameof(readers));
@@ -27,10 +29,13 @@ namespace TagCloud.TagCloudImageGenerator
                 throw new ArgumentNullException(nameof(statisticsBuilder));
             if (imageGenerators == null)
                 throw new ArgumentNullException(nameof(imageGenerators));
+            if (tagCloudDrawer == null)
+                throw new ArgumentNullException(nameof(tagCloudDrawer));
             _readers = readers.ToDictionary(x => x.FileExtension.ToLower(), x => x);
             _imageGenerators = imageGenerators.ToDictionary(x => x.Name.ToLower(), x => x);
             _statisticsBuilder = statisticsBuilder;
-            _currentImageGenerator = _imageGenerators.First().Value;
+            _tagCloudDrawer = tagCloudDrawer;
+            _currentTagCloudGenerator = _imageGenerators.First().Value;
         }
 
         public ITagCloudImageGenerator SetFont(string fontName)
@@ -45,20 +50,20 @@ namespace TagCloud.TagCloudImageGenerator
             {
                 throw new TagCloudImageGeneratorTuningException(fontName + " font doesn't exist or not installed on your computer");
             }
-            _currentImageGenerator.Font = newFont;
+            _currentTagCloudGenerator.Font = newFont;
             return this;
         }
 
         public ITagCloudImageGenerator SetImageSize(int width, int height)
         {
-            _currentImageGenerator.ImageWidth = width;
-            _currentImageGenerator.ImageHeight = height;
+            _currentTagCloudGenerator.ImageWidth = width;
+            _currentTagCloudGenerator.ImageHeight = height;
             return this;
         }
 
         public ITagCloudImageGenerator SetColorList(List<Color> colors)
         {
-            _currentImageGenerator.Colors = colors;
+            _currentTagCloudGenerator.Colors = colors;
             return this;
         }
 
@@ -89,7 +94,7 @@ namespace TagCloud.TagCloudImageGenerator
 
         public ITagCloudImageGenerator SetMaxFontSize(int size)
         {
-            _currentImageGenerator.MaxFontSize = size;
+            _currentTagCloudGenerator.MaxFontSize = size;
             return this;
         }
 
@@ -98,7 +103,7 @@ namespace TagCloud.TagCloudImageGenerator
             generatorName = generatorName.ToLower();
             if (!_imageGenerators.ContainsKey(generatorName))
                 throw new TagCloudImageGeneratorTuningException(generatorName + " generator doesn't exist");
-            _currentImageGenerator = _imageGenerators[generatorName.ToLower()];
+            _currentTagCloudGenerator = _imageGenerators[generatorName.ToLower()];
             return this;
         }
 
@@ -119,7 +124,7 @@ namespace TagCloud.TagCloudImageGenerator
 
             var statistics = _statisticsBuilder.BuildStatistic(words);
 
-            return _currentImageGenerator.GenerateImage(statistics);
+            return _tagCloudDrawer.DrawTagCloudImage(_currentTagCloudGenerator.GenerateCloud(statistics));
         }
     }
 
