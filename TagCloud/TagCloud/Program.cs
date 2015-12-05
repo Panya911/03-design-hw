@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using CommandLine;
 using TagCloud.TagCloudImageGenerator;
-using TagCloud.TagCloudImageGenerator.ImageGenerators;
+using TagCloud.TagCloudImageGenerator.TagCloudGenerators;
 
 namespace TagCloud
 {

@@ -61,7 +61,7 @@
     <Compile Include="TagCloudImageGenerator\CloudDrawer\ITagCloudImageDrawer.cs" />
     <Compile Include="TagCloudImageGenerator\TagCloud.cs" />
     <Compile Include="TagCloudImageGenerator\CloudDrawer\TagCloudImageDrawer.cs" />
-    <Compile Include="TagCloudImageGenerator\Word.cs" />
+    <Compile Include="TagCloudImageGenerator\TagCloudElement.cs" />
     <Compile Include="TagCloudImageGenerator\ITagCloudImageGenerator.cs" />
     <Compile Include="TagCloudImageGenerator\Statistic.cs" />
     <Compile Include="TagCloudImageGenerator\TagCloudImageGenerator.cs" />

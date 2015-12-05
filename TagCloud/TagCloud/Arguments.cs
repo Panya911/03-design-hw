@@ -31,7 +31,11 @@ namespace TagCloud
         [Option('i', "input", DefaultValue = "Text.txt",
             HelpText = "Path to file with text")]
         public string InputPath { get; set; }
-        [Option('o', "output", DefaultValue = "output.txt",
+
+        [Option('e',"extension",DefaultValue = "png",HelpText = "output file extension")]//выводить только доступные форматы
+        public string OutputExtension { get; set; }
+        
+        [Option('o', "output", DefaultValue = "output.png",
             HelpText = "Path to file where image will be saved")]
         public string OutputPath { get; set; }
 

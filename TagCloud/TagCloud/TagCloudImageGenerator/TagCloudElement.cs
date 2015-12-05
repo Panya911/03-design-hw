@@ -2,17 +2,16 @@
 
 namespace TagCloud.TagCloudImageGenerator
 {
-    public class Word
+    public class TagCloudElement
     {
-        public Rectangle Border { get; set; }
+        
         public string Text { get; set; }
-        public Point Location { get; set; }
+        public Rectangle Location { get; set; }
         public Color Color { get; set; }
         public Font Font { get; set; }
 
-        public Word(Rectangle border, string text, Point location, Color color, Font font)
+        public TagCloudElement(string text, Rectangle location, Color color, Font font)
         {
-            Border = border;
             Text = text;
             Location = location;
             Color = color;

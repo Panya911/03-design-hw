@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using TagCloud.TagCloudImageGenerator.CloudDrawer;
-using TagCloud.TagCloudImageGenerator.ImageGenerators;
+using TagCloud.TagCloudImageGenerator.TagCloudGenerators;
 using TagCloud.TagCloudImageGenerator.WordsReaders;
 using TagCloud.TagCloudImageGenerator.WordStatisticsBuilders;
 
@@ -124,7 +124,7 @@ namespace TagCloud.TagCloudImageGenerator
 
             var statistics = _statisticsBuilder.BuildStatistic(words);
 
-            return _tagCloudDrawer.DrawTagCloudImage(_currentTagCloudGenerator.GenerateCloud(statistics));
+            return _tagCloudDrawer.DrawTagCloudImage(statistics,_currentTagCloudGenerator);
         }
     }
 

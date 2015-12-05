@@ -6,13 +6,13 @@ namespace TagCloud.TagCloudImageGenerator
     {
         public readonly int Width;
         public readonly int Height;
-        public readonly IEnumerable<Word> Words;
+        public readonly IEnumerable<TagCloudElement> Elements;
 
-        public TagCloud(int width, int height, IEnumerable<Word> words)
+        public TagCloud(int width, int height, IEnumerable<TagCloudElement> elements)
         {
             Width = width;
             Height = height;
-            Words = words;
+            Elements = elements;
         }
     }
 }

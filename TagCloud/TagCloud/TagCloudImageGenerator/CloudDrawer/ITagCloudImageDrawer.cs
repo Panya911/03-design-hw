@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TagCloud.TagCloudImageGenerator.ImageGenerators;
+﻿using System.Drawing;
+using TagCloud.TagCloudImageGenerator.TagCloudGenerators;
 
 namespace TagCloud.TagCloudImageGenerator.CloudDrawer
 {
     public interface ITagCloudImageDrawer
     {
-        Image DrawTagCloudImage(TagCloud cloud);
+        Image DrawTagCloudImage(Statistic statistic, ITagCloudGenerator tagCloudGenerator);
     }
 }

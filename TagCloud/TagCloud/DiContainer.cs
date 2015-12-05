@@ -3,7 +3,7 @@ using Ninject;
 using Ninject.Extensions.Conventions;
 using TagCloud.TagCloudImageGenerator;
 using TagCloud.TagCloudImageGenerator.CloudDrawer;
-using TagCloud.TagCloudImageGenerator.ImageGenerators;
+using TagCloud.TagCloudImageGenerator.TagCloudGenerators;
 using TagCloud.TagCloudImageGenerator.WordsReaders;
 using TagCloud.TagCloudImageGenerator.WordStatisticsBuilders;
 
